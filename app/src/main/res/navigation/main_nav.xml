@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/main_nav"
+            app:startDestination="@id/locationListFragment">
+
+    <fragment
+            android:id="@+id/locationListFragment"
+            android:name="com.husar.openweather.ui.LocationListFragment"
+            android:label="Opean Weather App"
+            tools:layout="@layout/fragment_location_list">
+        <action
+                android:id="@+id/action_locationListFragment_to_locationAddFragment"
+                app:destination="@id/locationAddFragment"/>
+        <action
+                android:id="@+id/action_locationListFragment_to_detailFragment"
+                app:destination="@id/detailFragment"/>
+    </fragment>
+    <fragment
+            android:id="@+id/locationAddFragment"
+            android:name="com.husar.openweather.ui.LocationSearchFragment"
+            android:label="Search Location By"
+            tools:layout="@layout/fragment_location_add">
+        <action
+                android:id="@+id/action_locationAddFragment_to_locationListFragment"
+                app:destination="@id/locationListFragment"/>
+    </fragment>
+    <fragment
+            android:id="@+id/detailFragment"
+            android:name="com.husar.openweather.ui.DetailFragment"
+            android:label="Weather Details"
+            tools:layout="@layout/fragment_detail">
+        <argument
+                android:name="Weather"
+                app:argType="com.husar.openweather.model.WeatherResponse"/>
+        <action
+                android:id="@+id/action_detailFragment_to_locationListFragment"
+                app:destination="@id/locationListFragment"/>
+    </fragment>
+</navigation>

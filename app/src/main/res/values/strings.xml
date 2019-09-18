@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Open Weather</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="first_fragment">City</string>
+    <string name="second_fragment">Coordinators</string>
+
+    <string-array name="fragment_titles">
+        <item>@string/first_fragment</item>
+        <item>@string/second_fragment</item>
+    </string-array>
+</resources>
