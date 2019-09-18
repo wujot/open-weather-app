@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-
 import com.husar.openweather.databinding.FragmentSearchCoordinatorsBinding
 import com.husar.openweather.model.WeatherResponse
 import com.husar.openweather.utility.reObserve
