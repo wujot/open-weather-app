@@ -7,7 +7,7 @@
     <data>
         <variable
                 name="weather"
-                type="com.husar.openweather.model.WeatherResponse" />
+                type="com.husar.openweather.data.model.WeatherRecord" />
         <variable
                 name="viewModel"
                 type="com.husar.openweather.viewmodel.SearchCoordinatorsViewModel"/>

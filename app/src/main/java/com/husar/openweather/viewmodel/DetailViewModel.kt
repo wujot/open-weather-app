@@ -3,15 +3,16 @@ package com.husar.openweather.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.husar.openweather.data.model.WeatherRecord
 import com.husar.openweather.data.repository.OpenWeatherRepo
 import com.husar.openweather.model.WeatherResponse
 import com.husar.openweather.utility.SingleLiveEvent
 
 class DetailViewModel(val openWeatherRepo: OpenWeatherRepo): ViewModel() {
 
-    val currentWeather by lazy { MutableLiveData<WeatherResponse>() }
-    private val _weatherObservable by lazy { MutableLiveData<WeatherResponse>() }
-    val weatherObservable: LiveData<WeatherResponse>
+    val currentWeather by lazy { MutableLiveData<WeatherRecord>() }
+    private val _weatherObservable by lazy { MutableLiveData<WeatherRecord>() }
+    val weatherObservable: LiveData<WeatherRecord>
         get() = _weatherObservable
     private val _loadingObservable by lazy { MutableLiveData<Boolean>() }
     val loadingObservable: LiveData<Boolean>

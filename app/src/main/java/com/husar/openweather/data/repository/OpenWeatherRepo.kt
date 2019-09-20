@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.husar.openweather.BuildConfig
 import com.husar.openweather.data.local.OpenWeatherDao
+import com.husar.openweather.data.model.WeatherRecord
 import com.husar.openweather.data.remote.OpenWeatherApi
 import com.husar.openweather.model.WeatherResponse
+import com.husar.openweather.utility.convertResponseToEntity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -22,7 +24,7 @@ class OpenWeatherRepo(
 
     fun getWeatherFromRemoteByCity(
         city: String,
-        data: MutableLiveData<WeatherResponse>,
+        data: MutableLiveData<WeatherRecord>,
         loading: MutableLiveData<Boolean>,
         error: MutableLiveData<Boolean>
     ) {
@@ -35,8 +37,8 @@ class OpenWeatherRepo(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<WeatherResponse>() {
                     override fun onSuccess(currentWeather: WeatherResponse) {
-                        storeWeatherLocally(currentWeather)
-                        data.value = currentWeather
+                        storeWeatherLocally(convertResponseToEntity(currentWeather))
+                        data.value = convertResponseToEntity(currentWeather)
                         error.value = false
                         loading.value = false
                     }
@@ -53,7 +55,7 @@ class OpenWeatherRepo(
     fun getWeatherFromRemoteByCoordinators(
         lat: String,
         long: String,
-        data: MutableLiveData<WeatherResponse>,
+        data: MutableLiveData<WeatherRecord>,
         loading: MutableLiveData<Boolean>,
         error: MutableLiveData<Boolean>
     ) {
@@ -66,8 +68,8 @@ class OpenWeatherRepo(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<WeatherResponse>() {
                     override fun onSuccess(currentWeather: WeatherResponse) {
-                        storeWeatherLocally(currentWeather)
-                        data.value = currentWeather
+                        storeWeatherLocally(convertResponseToEntity(currentWeather))
+                        data.value = convertResponseToEntity(currentWeather)
                         error.value = false
                         loading.value = false
                     }
@@ -83,8 +85,8 @@ class OpenWeatherRepo(
     }
 
     fun getWeatherFromRemoteById(
-        storedWeather: MutableLiveData<WeatherResponse>,
-        data: MutableLiveData<WeatherResponse>,
+        storedWeather: MutableLiveData<WeatherRecord>,
+        data: MutableLiveData<WeatherRecord>,
         loading: MutableLiveData<Boolean>,
         error: MutableLiveData<Boolean>
     ) {
@@ -97,15 +99,14 @@ class OpenWeatherRepo(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object: DisposableSingleObserver<WeatherResponse>() {
                     override fun onSuccess(currentWeather: WeatherResponse) {
-                        updateWeatherLocally(currentWeather, storedWeather)
-                        data.value = currentWeather
+                        updateWeatherLocally(convertResponseToEntity(currentWeather), storedWeather)
+                        data.value = convertResponseToEntity(currentWeather)
                         error.value = false
                         loading.value = false
                     }
 
                     override fun onError(e: Throwable) {
                         e.printStackTrace()
-                        println("could not connected")
                         loading.value = false
                         error.value = true
                     }
@@ -114,7 +115,37 @@ class OpenWeatherRepo(
         )
     }
 
-    private fun storeWeatherLocally(weather: WeatherResponse) {
+    fun getWeatherFromRemoteByZipCode(
+        zip: String,
+        data: MutableLiveData<WeatherRecord>,
+        loading: MutableLiveData<Boolean>,
+        error: MutableLiveData<Boolean>
+    ) {
+        val units = "metric"
+        val apiKey = BuildConfig.API_KEY
+
+        disposable.add(
+            openWeatherApi.getCurrentWeatherByZipCode(zip, units, apiKey)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSingleObserver<WeatherResponse>() {
+                    override fun onSuccess(currentWeather: WeatherResponse) {
+                        storeWeatherLocally(convertResponseToEntity(currentWeather))
+                        data.value = convertResponseToEntity(currentWeather)
+                        error.value = false
+                        loading.value = false
+                    }
+
+                    override fun onError(e: Throwable) {
+                        e.printStackTrace()
+                        loading.value = false
+                        error.value = true
+                    }
+                })
+        )
+    }
+
+    private fun storeWeatherLocally(weather: WeatherRecord) {
         weather.currentDate = Date(System.currentTimeMillis())
         disposable.add(
             openWeatherDao.insertWeather(weather)
@@ -132,8 +163,7 @@ class OpenWeatherRepo(
         )
     }
 
-    private fun updateWeatherLocally(weather: WeatherResponse, storedWeather: MutableLiveData<WeatherResponse>) {
-        weather.currentDate = Date(System.currentTimeMillis())
+    private fun updateWeatherLocally(weather: WeatherRecord, storedWeather: MutableLiveData<WeatherRecord>) {
         storedWeather.value?.uuid?.let {
             weather.uuid = it
         }
@@ -153,14 +183,14 @@ class OpenWeatherRepo(
         )
     }
 
-    fun getAllFromDatabase(data: MutableLiveData<List<WeatherResponse>>) {
+    fun getAllFromDatabase(data: MutableLiveData<List<WeatherRecord>>) {
 
         disposable.add(
             openWeatherDao.getAllWeathers()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<List<WeatherResponse>>() {
-                    override fun onSuccess(all: List<WeatherResponse>) {
+                .subscribeWith(object : DisposableSingleObserver<List<WeatherRecord>>() {
+                    override fun onSuccess(all: List<WeatherRecord>) {
                         data.value = all
                     }
 
@@ -171,7 +201,7 @@ class OpenWeatherRepo(
         )
     }
 
-    fun deleteWeatherFromLocal(data: WeatherResponse, isDeleted: MutableLiveData<Boolean>) {
+    fun deleteWeatherFromLocal(data: WeatherRecord, isDeleted: MutableLiveData<Boolean>) {
 
         disposable.add(
             openWeatherDao.deleteWeather(data)
@@ -197,7 +227,7 @@ class OpenWeatherRepo(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<Int>() {
                     override fun onSuccess(deletemItems: Int) {
-                        println("Deleted items: $deletemItems")
+                        println("Deleted items size: $deletemItems")
                     }
 
                     override fun onError(e: Throwable) {

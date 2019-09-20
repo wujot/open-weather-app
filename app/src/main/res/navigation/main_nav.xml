@@ -33,7 +33,7 @@
             tools:layout="@layout/fragment_detail">
         <argument
                 android:name="Weather"
-                app:argType="com.husar.openweather.model.WeatherResponse"/>
+                app:argType="com.husar.openweather.data.model.WeatherRecord"/>
         <action
                 android:id="@+id/action_detailFragment_to_locationListFragment"
                 app:destination="@id/locationListFragment"/>

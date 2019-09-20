@@ -7,15 +7,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.husar.openweather.R
+import com.husar.openweather.data.model.WeatherRecord
 import com.husar.openweather.databinding.ItemWeatherBinding
 import com.husar.openweather.model.WeatherResponse
 import com.husar.openweather.ui.LocationListFragmentDirections
 import com.husar.openweather.ui.WeatherClickListener
 
-class WeatherListAdapter(private val weatherlList: ArrayList<WeatherResponse>):
+class WeatherListAdapter(private val weatherlList: ArrayList<WeatherRecord>):
     RecyclerView.Adapter<WeatherListAdapter.WeatherViewHolder>(), WeatherClickListener {
 
-    fun updateWeatherList(newWeatherList: List<WeatherResponse>) {
+    fun updateWeatherList(newWeatherList: List<WeatherRecord>) {
         weatherlList.clear()
         weatherlList.addAll(newWeatherList)
         notifyDataSetChanged()

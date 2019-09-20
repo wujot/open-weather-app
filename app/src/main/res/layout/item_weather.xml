@@ -7,7 +7,7 @@
     <data>
         <variable
                 name="weather"
-                type="com.husar.openweather.model.WeatherResponse" />
+                type="com.husar.openweather.data.model.WeatherRecord" />
         <variable
                 name="listener"
                 type="com.husar.openweather.ui.WeatherClickListener" />
@@ -66,8 +66,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="17 August 12:21"/>
-
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

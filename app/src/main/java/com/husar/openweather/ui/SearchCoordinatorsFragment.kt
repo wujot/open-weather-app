@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.husar.openweather.data.model.WeatherRecord
 import com.husar.openweather.databinding.FragmentSearchCoordinatorsBinding
-import com.husar.openweather.model.WeatherResponse
 import com.husar.openweather.utility.reObserve
 import com.husar.openweather.viewmodel.SearchCoordinatorsViewModel
 import kotlinx.android.synthetic.main.fragment_search_coordinators.*
@@ -25,7 +25,7 @@ class SearchCoordinatorsFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchCoordinatorsBinding
     private val viewModel: SearchCoordinatorsViewModel by viewModel()
-    var weather: WeatherResponse? = null
+    var weather: WeatherRecord? = null
 
     private val loadingObserver = Observer<Boolean> {isLoading ->
         binding.loadingLayout.visibility = if (isLoading) View.VISIBLE else View.GONE
@@ -40,7 +40,7 @@ class SearchCoordinatorsFragment : Fragment() {
         Toast.makeText(context, "Problems occurred.\nPlease check your internet connection\nand try again.", Toast.LENGTH_SHORT).show()
     }
 
-    private val weatherObserver = Observer<WeatherResponse> { data ->
+    private val weatherObserver = Observer<WeatherRecord> { data ->
         data?.let {
             weather = data
             binding.weather = weather

@@ -6,12 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.husar.openweather.data.model.WeatherRecord
 import com.husar.openweather.data.repository.OpenWeatherRepo
 
-class SearchCoordinatorsViewModel(val openWeatherRepo: OpenWeatherRepo): ViewModel() {
+class SearchZipViewModel(val openWeatherRepo: OpenWeatherRepo) : ViewModel() {
 
-    val latitudeInput by lazy { MutableLiveData<String>() }
-    val longitudeInput  by lazy { MutableLiveData<String>() }
-    val cityResult by lazy { MutableLiveData<String>() }
-
+    val zipInput by lazy { MutableLiveData<String>() }
     private val _weatherObservable by lazy { MutableLiveData<WeatherRecord>() }
     val weatherObservable: LiveData<WeatherRecord>
         get() = _weatherObservable
@@ -23,23 +20,15 @@ class SearchCoordinatorsViewModel(val openWeatherRepo: OpenWeatherRepo): ViewMod
         get() = _loadingObservable
 
     fun onButtonSearchClicked() {
-        _loadingObservable.value = true
-        getCityByCoordinators()
+        getWeatherByZipCode()
     }
 
-    private fun getCityByCoordinators() {
-        openWeatherRepo.getWeatherFromRemoteByCoordinators(
-            latitudeInput.value.toString(),
-            longitudeInput.value.toString(),
+    private fun getWeatherByZipCode() {
+        openWeatherRepo.getWeatherFromRemoteByZipCode(
+            zipInput.value.toString(),
             _weatherObservable,
             _loadingObservable,
             _loadErrorObservable
         )
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-
-        openWeatherRepo.disposable.clear()
     }
 }

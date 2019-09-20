@@ -11,8 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.husar.openweather.adapter.WeatherListAdapter
+import com.husar.openweather.data.model.WeatherRecord
 import com.husar.openweather.databinding.FragmentLocationListBinding
-import com.husar.openweather.model.WeatherResponse
 import com.husar.openweather.utility.reObserve
 import com.husar.openweather.viewmodel.LocationListViewModel
 import kotlinx.android.synthetic.main.fragment_location_list.*
@@ -31,7 +31,7 @@ class LocationListFragment : Fragment() {
         }
     }
 
-    private val weathersObserver = Observer<List<WeatherResponse>> { list ->
+    private val weathersObserver = Observer<List<WeatherRecord>> { list ->
         list?.let {
             listAdapter.updateWeatherList(it)
         }

@@ -1,30 +1,26 @@
 package com.husar.openweather.ui
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.husar.openweather.data.model.WeatherRecord
-import com.husar.openweather.databinding.FragmentSearchCityBinding
+import com.husar.openweather.databinding.FragmentSearchZipBinding
 import com.husar.openweather.utility.reObserve
-import com.husar.openweather.viewmodel.SearchCityViewModel
-import kotlinx.android.synthetic.main.fragment_search_city.*
+import com.husar.openweather.viewmodel.SearchZipViewModel
+import kotlinx.android.synthetic.main.fragment_search_zip.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class SearchCityFragment : Fragment() {
+class SearchZipFragment : Fragment() {
 
     companion object {
-        fun newInstance(): SearchCityFragment {
-            return SearchCityFragment()
+        fun newInstance(): SearchZipFragment {
+            return SearchZipFragment()
         }
     }
-
-    private lateinit var binding: FragmentSearchCityBinding
-    private val viewModel: SearchCityViewModel by viewModel()
-    var weather: WeatherRecord? = null
 
     private val loadingObserver = Observer<Boolean> {isLoading ->
         binding.loadingLayout.visibility = if (isLoading) View.VISIBLE else View.GONE
@@ -48,11 +44,15 @@ class SearchCityFragment : Fragment() {
         }
     }
 
+    private lateinit var binding: FragmentSearchZipBinding
+    private val viewModel: SearchZipViewModel by viewModel()
+    var weather: WeatherRecord? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSearchCityBinding.inflate(inflater, container, false)
+        binding = FragmentSearchZipBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
         return binding.root

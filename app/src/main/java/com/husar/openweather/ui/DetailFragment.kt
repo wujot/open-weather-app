@@ -1,6 +1,5 @@
 package com.husar.openweather.ui
 
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.husar.openweather.R
+import com.husar.openweather.data.model.WeatherRecord
 import com.husar.openweather.databinding.FragmentDetailBinding
-import com.husar.openweather.model.WeatherResponse
 import com.husar.openweather.utility.reObserve
 import com.husar.openweather.viewmodel.DetailViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class DetailFragment : Fragment() {
 
-    var weather: WeatherResponse? = null
+    var weather: WeatherRecord? = null
     private val viewModel: DetailViewModel by viewModel()
     private lateinit var binding: FragmentDetailBinding
 
@@ -27,7 +26,7 @@ class DetailFragment : Fragment() {
         binding.loadingLayout.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    private val weatherObserver = Observer<WeatherResponse> { data ->
+    private val weatherObserver = Observer<WeatherRecord> { data ->
         binding.weather = data
         Toast.makeText(context, "Current weather successfully updated.", Toast.LENGTH_SHORT).show()
     }

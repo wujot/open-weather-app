@@ -7,12 +7,14 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.husar.openweather.R
 import com.husar.openweather.ui.SearchCityFragment
 import com.husar.openweather.ui.SearchCoordinatorsFragment
+import com.husar.openweather.ui.SearchZipFragment
 
 class SearchLocationPagerAdapter(private val context: Context?, fm: FragmentManager): FragmentStatePagerAdapter(fm) {
 
     private val fragmentList = listOf(
         SearchCityFragment.newInstance(),
-        SearchCoordinatorsFragment.newInstance()
+        SearchCoordinatorsFragment.newInstance(),
+        SearchZipFragment.newInstance()
     )
 
     override fun getItem(position: Int): Fragment = fragmentList[position]

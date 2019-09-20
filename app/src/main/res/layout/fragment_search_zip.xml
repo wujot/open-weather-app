@@ -10,21 +10,21 @@
                 type="com.husar.openweather.data.model.WeatherRecord" />
         <variable
                 name="viewModel"
-                type="com.husar.openweather.viewmodel.SearchCityViewModel"/>
+                type="com.husar.openweather.viewmodel.SearchZipViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/detail_fragment_gradient_background"
-            tools:context=".ui.SearchCityFragment">
+            tools:context=".ui.SearchZipFragment">
 
         <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/search_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="Please type a name of the city"
+                android:hint="Please type a zip of the city"
                 app:boxStrokeColor="#FFFFFF"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="parent"
@@ -33,7 +33,7 @@
             <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewModel.cityInput}"/>
+                    android:text="@={viewModel.zipInput}"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
